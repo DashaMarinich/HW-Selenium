@@ -31,7 +31,7 @@ class CallbackTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
-      //  options.addArguments("--headless");
+        options.addArguments("--headless");
         driver = new ChromeDriver(options);
     }
 
@@ -40,6 +40,22 @@ class CallbackTest {
         driver.quit();
         driver = null;
     }
+
+    @Test
+    void sendingForm1() {
+        driver.get("http://localhost:9999/");
+        List<WebElement> inputs = driver.findElements(By.cssSelector("input"));
+        inputs.get(0).sendKeys("Сергей");
+        inputs.get(1).sendKeys("+79111111111");
+        driver.findElement(By.className("checkbox__box")).click();
+        driver.findElement(By.tagName("button")).click();
+        WebElement result = driver.findElement(By.cssSelector("[data-test-id='order-success']"));
+        assertTrue(result.isDisplayed());
+        assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", result.getText().trim());
+
+
+    }
+
 
     @Test
     void sendingForm() {
